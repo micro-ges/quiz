@@ -38,3 +38,13 @@ nav span             { margin: 0px 10px 0px 0px;}
   max-height: 300px;
   position: absolute;
 }
+
+tr.border_top td {
+  border-top:2pt solid black;
+  padding-top: 15px;
+}
+
+tr.border_bottom td {
+  border-bottom:2pt solid black;
+  padding-bottom: 15px;
+}
