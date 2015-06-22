@@ -55,4 +55,5 @@ tr.border_top td {
 tr.border_bottom td {
   border-bottom:2pt solid black;
   padding-bottom: 15px;
+  padding-right: 25px;
 }
