@@ -12,6 +12,8 @@ var routes = require('./routes/index');
 
 var app = express();
 
+var idlemax = 120; // Número de segundos máximo para auto-logout
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -34,6 +36,19 @@ app.use(function(req, res, next) {
   if (!req.path.match(/\/login|\/logout/)) {
     req.session.redir = req.path;
   }
+
+  if (req.session.user) {
+    var currenttime = (new Date).getTime();
+    var idletime = Math.round((currenttime-req.session.user.logintime)/1000);
+    if ( idletime > idlemax ) {
+      console.log('LOGOUT: Excedido el umbral sin actividad del usuario (' + idlemax + ') en ' + idletime + ' segundos.'); //DEBUG
+      delete req.session.user;
+    } else if ( idletime > 0 ) {
+      console.log('RESET: tiempo desde la ultima actividad: ' + idletime + ' segundos'); //DEBUG
+      req.session.user.logintime = (new Date).getTime();
+    }  
+  }
+
   // Hacer visible req.session en las vistas
   res.locals.session = req.session;
   next();
